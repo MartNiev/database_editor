@@ -1,0 +1,169 @@
+body {
+  font-family: "LINE Seed JP", sans-serif;
+  margin: 20px;
+}
+
+#mainSection {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav {
+  margin: 0px;
+  width: 100%;
+  height: 25px;
+  border: 1px solid #ddd;
+  background-color: #f2f2f2;
+}
+
+.actionButtons {
+  all: unset;
+  margin: 0pxl;
+  height: 100%;
+  width: 60px;
+  text-align: center;
+  border: 0px;
+  border-radius: 0px;
+  font-size: 15px;
+}
+
+.actionButtons:active {
+  background-color: #777777;
+  border-radius: 0px;
+}
+
+.actionButtons:hover {
+  cursor: default;
+}
+
+#add {
+  padding: 5px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+header {
+  margin: 0px;
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+#message {
+  margin: 0px;
+  width: 100vw;
+
+  text-align: center;
+}
+
+.checkBox {
+  margin: 5px;
+  width: 15px;
+  height: 15px;
+}
+
+#checkContainer {
+  margin: 0px;
+  padding: 0px;
+  width: 5px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  top: 80vh;
+  width: 100%;
+  gap: 10px;
+}
+
+.pageBt {
+  width: 150px;
+  height: 30px;
+  border: solid 1px #9e9e9e;
+  border-radius: 5px;
+}
+
+.pageBt:active {
+  border: solid 1px black;
+  border-radius: 5px;
+  background-color: #e6e6e6;
+}
+
+.formContainer {
+  display: inline-block;
+  padding: 50px;
+  border: 1px solid black;
+  background-color: #f2f2f2;
+  border-radius: 4px;
+}
+
+.addDataContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.userForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.rowBehavior:hover {
+  background-color: #ececec;
+}
+
+#deletionPage {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  background-color: #9e9e9e4d;
+  backdrop-filter: blur(5px);
+}
+
+.deletionContainer {
+  margin: 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.messageBox {
+  display: inline-block;
+  padding: 50px;
+  border-radius: 8px;
+  background-color: white;
+}
+
+.yesOrNoBt {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}

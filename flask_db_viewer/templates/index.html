@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Database</title>
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/style.css')}}"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=LINE+Seed+JP&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="iframeContainer"></div>
+    <header><h1>Database</h1></header>
+
+    <section id="mainSection">
+      <nav class="nav">
+        <button class="actionButtons" id="deleteBt" onclick="deleteMessage()">
+          Delete
+        </button>
+        <a class="actionButtons" id="add" href="{{url_for('addData')}}">
+          Add
+        </a>
+      </nav>
+
+      <div id="message"></div>
+
+      <div class="container">
+        <table id="dataTable">
+          <thead>
+            <tr id="table-header"></tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+
+        <div class="buttons">
+          <button class="pageBt" onclick="loadData('prev')">Prev Page</button>
+          <button class="pageBt" onclick="loadData('next')">Next Page</button>
+        </div>
+      </div>
+    </section>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='dataHandling.js') }}"></script>
+  </body>
+</html>

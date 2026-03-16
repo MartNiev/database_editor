@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Data</title>
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/style.css')}}"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=LINE+Seed+JP&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header><h1>Add Data</h1></header>
+    <section class="addDataContainer">
+      <div class="formContainer">
+        <form class="userForm">
+          <input type="text" id="firstName" placeholder="First Name" />
+          <input type="text" id="lastName" placeholder="Last Name" />
+          <div>
+            <button class="pageBt" onclick="addData()">Create</button>
+            <button class="pageBt" onclick="cancelForm()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <script src="{{ url_for('static', filename='dataHandling.js')}}"></script>
+  </body>
+</html>
