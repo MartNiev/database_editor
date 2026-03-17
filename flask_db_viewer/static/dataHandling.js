@@ -14,7 +14,7 @@ async function deleteQuery(id) {
     response = await fetch(`/table/accounts/delete?id=${id}`);
 
     if (response.ok) {
-      alert("Data Deleted!");
+      // alert("Data Deleted!");
     }
 
     iframe.remove();
@@ -50,6 +50,15 @@ function cancel() {
   iframe.remove();
 }
 
+function addPopUp() {
+  const messageContainer = document.getElementById("iframeContainer");
+  const messageWindow = document.createElement("iframe");
+  messageWindow.src = "/add_data";
+  messageWindow.id = "deletionPage";
+
+  messageContainer.appendChild(messageWindow);
+}
+
 function addData() {
   let firstName = document.getElementById("firstName").value;
   let lastName = document.getElementById("lastName").value;
@@ -59,6 +68,8 @@ function addData() {
       const response = await fetch(
         `/data/addClient?firstName=${firstName}&lastName=${lastName}`,
       );
+
+      iframe.remove();
       if (response.ok) window.location.href = "/";
     } catch (error) {
       alert(`Error adding data ${error}`);
@@ -69,5 +80,5 @@ function addData() {
 }
 
 function cancelForm() {
-  window.location.href = "/";
+  iframe.remove();
 }

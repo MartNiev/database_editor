@@ -9,6 +9,11 @@ body {
   gap: 2px;
 }
 
+header {
+  margin: 0px;
+  text-align: center;
+}
+
 .nav {
   margin: 0px;
   width: 100%;
@@ -37,8 +42,10 @@ body {
   cursor: default;
 }
 
-#add {
-  padding: 5px;
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
 }
 
 table {
@@ -58,15 +65,11 @@ th {
   background-color: #dddddd;
 }
 
-header {
-  margin: 0px;
-  text-align: center;
-}
-
-.container {
+.buttons {
   display: flex;
-  flex-direction: column;
-  gap: 25px;
+  justify-content: center;
+  width: 100%;
+  gap: 10px;
 }
 
 #message {
@@ -86,15 +89,6 @@ header {
   margin: 0px;
   padding: 0px;
   width: 5px;
-}
-
-.buttons {
-  display: flex;
-  justify-content: center;
-  position: fixed;
-  top: 80vh;
-  width: 100%;
-  gap: 10px;
 }
 
 .pageBt {
@@ -119,9 +113,13 @@ header {
 }
 
 .addDataContainer {
+  margin: 0px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: 100vh;
 }
 
 .userForm {

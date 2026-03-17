@@ -71,7 +71,7 @@ def delete(table_name):
         cursor = conn.cursor()
 
         id = request.args.get("id", default=1, type=int)
-        print(id)
+        
         cursor.execute(f"DELETE FROM '{table_name}' WHERE id = {id};")
         
         conn.commit()
