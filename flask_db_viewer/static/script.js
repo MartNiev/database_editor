@@ -124,7 +124,3 @@ async function loadData(condition = null) {
 }
 
 loadData("start");
-
-document.cookie = "theme=dark; expires=Fri, 15 Mar 2027 00:00:00 GMT; path=/";
-
-console.log(document.cookie);

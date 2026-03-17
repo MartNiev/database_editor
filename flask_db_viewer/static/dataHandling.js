@@ -1,15 +1,4 @@
-let deleted;
-
-async function deleteQuery(id) {
-  try {
-    response = await fetch(`/table/accounts/delete?id=${id}`);
-    if (response.ok) {
-      deleted = true;
-    }
-  } catch (error) {
-    alert("Error deleting data: " + error);
-  }
-}
+const iframe = parent.document.getElementById("deletionPage");
 
 function deleteMessage() {
   const messageContainer = document.getElementById("iframeContainer");
@@ -17,9 +6,21 @@ function deleteMessage() {
   messageWindow.src = "/delete_data";
   messageWindow.id = "deletionPage";
 
-  console.log(messageWindow);
-
   messageContainer.appendChild(messageWindow);
+}
+
+async function deleteQuery(id) {
+  try {
+    response = await fetch(`/table/accounts/delete?id=${id}`);
+
+    if (response.ok) {
+      alert("Data Deleted!");
+    }
+
+    iframe.remove();
+  } catch (error) {
+    alert("Error deleting data: " + error);
+  }
 }
 
 function deleteData() {
@@ -29,22 +30,24 @@ function deleteData() {
   for (let i = currentItems[0]; i < currentItems.length; i++) {
     let checkId = `check${i}`;
     let rowId = `row${i}`;
-    let checkBox = document.getElementById(checkId);
-    let row = document.getElementById(rowId);
+    let checkBox = parent.document.getElementById(checkId);
+    let row = parent.document.getElementById(rowId);
+
     if (checkBox !== null) {
       if (checkBox.checked) {
-        console.log("Clicked!");
         deleteList.push(i);
         row.remove();
       }
     }
   }
+
   for (const row of deleteList) {
     deleteQuery(row);
   }
-  if (deleted) {
-    alert("Data delete!");
-  }
+}
+
+function cancel() {
+  iframe.remove();
 }
 
 function addData() {
@@ -67,15 +70,4 @@ function addData() {
 
 function cancelForm() {
   window.location.href = "/";
-}
-
-function userOption(option) {
-  const iframe = parent.document.getElementById("deletionPage");
-
-  if (option === "yes") {
-    deleteData();
-    iframe.remove();
-  } else if (option === "no") {
-    iframe.remove();
-  }
 }

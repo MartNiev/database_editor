@@ -1,10 +1,10 @@
-from flask import Flask, jsonify, request, render_template, url_for
+from flask import Flask, jsonify, request, render_template, make_response
 import sqlite3
 import random
 
 app = Flask(__name__)
 
-DB_File = "/Users/manie/Documents/VSCode/Small_Projects/Database/flask_db_viewer/bank_extra_large.db"
+DB_File = "/Users/manie/Documents/VSCode/Small_Projects/Database/flask_db_viewer/databases/bank_large.db"
 
 def get_connection():
     return sqlite3.connect(DB_File)
@@ -20,7 +20,6 @@ def addData():
 
 @app.route("/delete_data")
 def deleteData():
-   
     return render_template("deletionConfirmation.html")
 
 @app.route("/table/<table_name>")
@@ -72,7 +71,7 @@ def delete(table_name):
         cursor = conn.cursor()
 
         id = request.args.get("id", default=1, type=int)
-        
+        print(id)
         cursor.execute(f"DELETE FROM '{table_name}' WHERE id = {id};")
         
         conn.commit()
