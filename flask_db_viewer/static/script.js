@@ -32,6 +32,7 @@ function displayData(data) {
 
     data.rows.forEach((row) => {
       let tr = document.createElement("tr");
+      tr.setAttribute("onchange", `getCheckedBoxes(${row.id})`);
 
       let checkContainer = document.createElement("td");
       checkContainer.id = "checkContainer";
@@ -115,7 +116,7 @@ async function loadData(condition = null) {
       if (data.page === 1) startPage = true;
       else startPage = false;
 
-      console.log(data);
+      // console.log(data);
       displayData(data);
     } catch (error) {
       console.log("Error loading data: " + error);

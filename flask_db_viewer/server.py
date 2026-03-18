@@ -46,8 +46,6 @@ def list_table(table_name):
   
         rows = cursor.fetchall()
 
-        
-      
         col_names = [description[0] for description in cursor.description]
     
         conn.close()
@@ -71,15 +69,15 @@ def delete(table_name):
         cursor = conn.cursor()
 
         id = request.args.get("id", default=1, type=int)
-        
-        cursor.execute(f"DELETE FROM '{table_name}' WHERE id = {id};")
+
+        cursor.execute(f"DELETE FROM '{table_name}' WHERE id = ?",(id,))
         
         conn.commit()
         cursor.close()
 
         return jsonify({"success": True})
     except Exception as e:
-        return jsonify({"Error": e})
+        return jsonify({"Error": str(e)}), 500
 
 @app.route("/data/addClient")
 def addClient():

@@ -1,49 +1,45 @@
-const iframe = parent.document.getElementById("deletionPage");
+const iframe = parent.document.getElementById("popUpWindow");
 
 function deleteMessage() {
   const messageContainer = document.getElementById("iframeContainer");
   const messageWindow = document.createElement("iframe");
   messageWindow.src = "/delete_data";
-  messageWindow.id = "deletionPage";
+  messageWindow.id = "popUpWindow";
 
   messageContainer.appendChild(messageWindow);
 }
 
 async function deleteQuery(id) {
   try {
-    response = await fetch(`/table/accounts/delete?id=${id}`);
+    const response = await fetch(`/table/accounts/delete?id=${id}`);
 
-    if (response.ok) {
-      // alert("Data Deleted!");
+    if (!response.ok) {
+      const err = await response.json();
+      alert("Server error: " + (err.error || response.status));
+      return;
     }
-
-    iframe.remove();
   } catch (error) {
     alert("Error deleting data: " + error);
   }
 }
+let deleteListObj = { list: [] };
+
+function getCheckedBoxes(number) {
+  deleteListObj.list.push(number);
+  localStorage.setItem("deleteList", JSON.stringify(deleteListObj));
+}
 
 function deleteData() {
-  const currentItems = localStorage.getItem("currentItems");
-
-  let deleteList = [];
-  for (let i = currentItems[0]; i < currentItems.length; i++) {
-    let checkId = `check${i}`;
-    let rowId = `row${i}`;
-    let checkBox = parent.document.getElementById(checkId);
-    let row = parent.document.getElementById(rowId);
-
-    if (checkBox !== null) {
-      if (checkBox.checked) {
-        deleteList.push(i);
-        row.remove();
-      }
-    }
-  }
+  const deleteList = JSON.parse(localStorage.getItem("deleteList")).list;
 
   for (const row of deleteList) {
-    deleteQuery(row);
+    let rowId = `row${row}`;
+    let rowElement = parent.document.getElementById(rowId);
+    rowElement.remove();
+    window.parent.deleteQuery(row);
   }
+
+  iframe.remove();
 }
 
 function cancel() {
@@ -54,7 +50,7 @@ function addPopUp() {
   const messageContainer = document.getElementById("iframeContainer");
   const messageWindow = document.createElement("iframe");
   messageWindow.src = "/add_data";
-  messageWindow.id = "deletionPage";
+  messageWindow.id = "popUpWindow";
 
   messageContainer.appendChild(messageWindow);
 }
