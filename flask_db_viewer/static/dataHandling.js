@@ -1,6 +1,12 @@
-const iframe = parent.document.getElementById("popUpWindow");
+let deleteListObj = {
+  list: [],
+  clearArray: function () {
+    this.list.length = 0;
+  },
+};
 
 function deleteMessage() {
+  deleteListObj.clearArray();
   const messageContainer = document.getElementById("iframeContainer");
   const messageWindow = document.createElement("iframe");
   messageWindow.src = "/delete_data";
@@ -22,14 +28,15 @@ async function deleteQuery(id) {
     alert("Error deleting data: " + error);
   }
 }
-let deleteListObj = { list: [] };
 
 function getCheckedBoxes(number) {
   deleteListObj.list.push(number);
   localStorage.setItem("deleteList", JSON.stringify(deleteListObj));
 }
 
+// Action when pressing "Yes" button from iframe
 function deleteData() {
+  const iframe = parent.document.getElementById("popUpWindow");
   const deleteList = JSON.parse(localStorage.getItem("deleteList")).list;
 
   for (const row of deleteList) {
@@ -39,42 +46,70 @@ function deleteData() {
     window.parent.deleteQuery(row);
   }
 
+  localStorage.removeItem("deleteList");
+
   iframe.remove();
 }
 
 function cancel() {
+  const iframe = parent.document.getElementById("popUpWindow");
   iframe.remove();
 }
 
 function addPopUp() {
   const messageContainer = document.getElementById("iframeContainer");
-  const messageWindow = document.createElement("iframe");
-  messageWindow.src = "/add_data";
-  messageWindow.id = "popUpWindow";
+  const popUp = document.createElement("dialog");
+  popUp.id = "popUpWindow";
+  popUp.innerHTML = `<section class="addDataContainer">
+      <div class="messageBox">
+        <header><h1>Add Data</h1></header>
+        <form class="userForm">
+          <input type="text" id="firstName" placeholder="First Name" />
+          <input type="text" id="lastName" placeholder="Last Name" />
+          <div class="yesOrNoBt">
+            <button type="button" class="pageBt" onclick="addData()">Create</button>
+            <button type="button" class="pageBt" onclick="cancelForm()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </section>`;
 
-  messageContainer.appendChild(messageWindow);
+  messageContainer.appendChild(popUp);
+  popUp.showModal();
 }
 
+//Action when pressing "Create" button from iframe
 function addData() {
   let firstName = document.getElementById("firstName").value;
   let lastName = document.getElementById("lastName").value;
 
-  async function addNewData() {
-    try {
-      const response = await fetch(
-        `/data/addClient?firstName=${firstName}&lastName=${lastName}`,
-      );
+  if ((!firstName && !lastName) || !firstName || !lastName) {
+    alert("Field CANNOT be empty");
+    return;
+  }
 
-      iframe.remove();
-      if (response.ok) window.location.href = "/";
+  async function addNewData(firstName, lastName) {
+    try {
+      const response = await fetch(`/data/addClient?firstName=${firstName}&lastName=${lastName}`);
+
+      if (!response.ok) {
+        const err = await response.json();
+        alert("Server error: " + (err.error || response.status));
+        return;
+      } else {
+        document.getElementById("popUpWindow").close();
+        window.location.href = "/";
+      }
     } catch (error) {
-      alert(`Error adding data ${error}`);
+      alert(`Error adding data ${error.message}`);
     }
   }
 
-  addNewData();
+  addNewData(firstName, lastName);
+  // Data is adding to database the iframe is not removing
 }
 
 function cancelForm() {
-  iframe.remove();
+  const popUp = document.getElementById("popUpWindow");
+  popUp.remove();
 }

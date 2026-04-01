@@ -4,7 +4,7 @@ import random
 
 app = Flask(__name__)
 
-DB_File = "/Users/manie/Documents/VSCode/Small_Projects/Database/flask_db_viewer/databases/bank_large.db"
+DB_File = "/Users/manie/Documents/VSCode/Small_Projects/Database/flask_db_viewer/databases/bank.db"
 
 def get_connection():
     return sqlite3.connect(DB_File)
@@ -90,7 +90,7 @@ def addClient():
         balance = 0.0
 
         cursor.execute(f"INSERT INTO accounts ('first_name', 'last_name', 'account', 'balance') VALUES ('{firstName}', '{lastName}', '{account}', '{balance}');")
-
+        
         conn.commit()
         cursor.close()
 

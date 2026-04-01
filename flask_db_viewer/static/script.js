@@ -108,7 +108,7 @@ async function loadData(condition = null) {
   ) {
     try {
       const response = await fetch(
-        `/table/accounts?page=${currentPage}&limit=10`,
+        `/table/accounts?page=${currentPage}&limit=15`,
       );
       const data = await response.json();
 
