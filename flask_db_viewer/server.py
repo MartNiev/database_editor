@@ -14,13 +14,10 @@ def get_connection():
 def home():
    return render_template("index.html")
 
-@app.route("/add_data")
-def addData():
-    return render_template("addData.html")
-
 @app.route("/delete_data")
 def deleteData():
     return render_template("deletionConfirmation.html")
+
 
 @app.route("/table/<table_name>")
 def list_table(table_name):

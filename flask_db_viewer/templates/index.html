@@ -4,10 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Database</title>
-    <link
-      rel="stylesheet"
-      href="{{url_for('static', filename='css/style.css')}}"
-    />
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}" />
     <link
       href="https://fonts.googleapis.com/css2?family=LINE+Seed+JP&display=swap"
       rel="stylesheet"
@@ -19,9 +16,7 @@
 
     <section id="mainSection">
       <nav class="nav">
-        <button class="actionButtons" id="deleteBt" onclick="deleteMessage()">
-          Delete
-        </button>
+        <button class="actionButtons" id="deleteBt" onclick="deleteMessage()">Delete</button>
         <button class="actionButtons" onclick="addPopUp()">Add</button>
       </nav>
 
@@ -43,6 +38,8 @@
     </section>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
-    <script src="{{ url_for('static', filename='dataHandling.js') }}"></script>
+    <script src="{{ url_for('static', filename='deleteData.js') }}"></script>
+    <script src="{{ url_for('static', filename='addData.js') }}"></script>
+    <script src="{{ url_for('static', filename='editData.js') }}"></script>
   </body>
 </html>

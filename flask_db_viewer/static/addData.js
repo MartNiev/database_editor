@@ -1,64 +1,6 @@
-let deleteListObj = {
-  list: [],
-  clearArray: function () {
-    this.list.length = 0;
-  },
-};
-
-function deleteMessage() {
-  deleteListObj.clearArray();
-  const messageContainer = document.getElementById("iframeContainer");
-  const messageWindow = document.createElement("iframe");
-  messageWindow.src = "/delete_data";
-  messageWindow.id = "popUpWindow";
-
-  messageContainer.appendChild(messageWindow);
-}
-
-async function deleteQuery(id) {
-  try {
-    const response = await fetch(`/table/accounts/delete?id=${id}`);
-
-    if (!response.ok) {
-      const err = await response.json();
-      alert("Server error: " + (err.error || response.status));
-      return;
-    }
-  } catch (error) {
-    alert("Error deleting data: " + error);
-  }
-}
-
-function getCheckedBoxes(number) {
-  deleteListObj.list.push(number);
-  localStorage.setItem("deleteList", JSON.stringify(deleteListObj));
-}
-
-// Action when pressing "Yes" button from iframe
-function deleteData() {
-  const iframe = parent.document.getElementById("popUpWindow");
-  const deleteList = JSON.parse(localStorage.getItem("deleteList")).list;
-
-  for (const row of deleteList) {
-    let rowId = `row${row}`;
-    let rowElement = parent.document.getElementById(rowId);
-    rowElement.remove();
-    window.parent.deleteQuery(row);
-  }
-
-  localStorage.removeItem("deleteList");
-
-  iframe.remove();
-}
-
-function cancel() {
-  const iframe = parent.document.getElementById("popUpWindow");
-  iframe.remove();
-}
-
 function addPopUp() {
   const messageContainer = document.getElementById("iframeContainer");
-  const popUp = document.createElement("dialog");
+  const popUp = document.createElement("div");
   popUp.id = "popUpWindow";
   popUp.innerHTML = `<section class="addDataContainer">
       <div class="messageBox">
@@ -75,7 +17,6 @@ function addPopUp() {
     </section>`;
 
   messageContainer.appendChild(popUp);
-  popUp.showModal();
 }
 
 //Action when pressing "Create" button from iframe
@@ -97,7 +38,7 @@ function addData() {
         alert("Server error: " + (err.error || response.status));
         return;
       } else {
-        document.getElementById("popUpWindow").close();
+        document.getElementById("popUpWindow").remove();
         window.location.href = "/";
       }
     } catch (error) {

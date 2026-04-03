@@ -1,3 +1,36 @@
+function checkBox(container, rowId, tr) {
+  let checkBox = document.createElement("input");
+  checkBox.type = "checkbox";
+  checkBox.id = `check${rowId}`;
+  checkBox.className = "checkBox";
+  container.appendChild(checkBox);
+
+  let increment = 1;
+
+  checkBox.addEventListener("click", function () {
+    if (increment % 2 !== 0) {
+      tr.style.backgroundColor = "#ececec";
+      increment++;
+    } else {
+      tr.style.backgroundColor = "white";
+      increment++;
+    }
+  });
+}
+
+function editButtons(tr) {
+  let editContainer = document.createElement("td");
+  editContainer.style.width = "42px";
+
+  let editButton = document.createElement("button");
+  let text = document.createTextNode("Edit");
+  editButton.setAttribute("onclick", "editPage()");
+  editButton.append(text);
+
+  editContainer.appendChild(editButton);
+  tr.appendChild(editContainer);
+}
+
 function displayData(data) {
   const headerRow = document.getElementById("table-header");
   const body = document.getElementById("table-body");
@@ -11,13 +44,8 @@ function displayData(data) {
     if (messageText !== null) {
       messageText.remove();
     }
-    //forEach runs callback for each Item in array
-    const headerNames = [
-      "Account Number",
-      "Balance",
-      "First Name",
-      "Last Name",
-    ];
+
+    const headerNames = ["Edit", "Account Number", "Balance", "First Name", "Last Name"];
 
     let checkContainer = document.createElement("th");
     headerRow.appendChild(checkContainer);
@@ -38,23 +66,8 @@ function displayData(data) {
       checkContainer.id = "checkContainer";
       tr.appendChild(checkContainer);
 
-      let checkBox = document.createElement("input");
-      checkBox.type = "checkbox";
-      checkBox.id = `check${row.id}`;
-      checkBox.className = "checkBox";
-      checkContainer.appendChild(checkBox);
-
-      let increment = 1;
-
-      checkBox.addEventListener("click", function () {
-        if (increment % 2 !== 0) {
-          tr.style.backgroundColor = "#ececec";
-          increment++;
-        } else {
-          tr.style.backgroundColor = "white";
-          increment++;
-        }
-      });
+      checkBox(checkContainer, row.id, tr);
+      editButtons(tr);
 
       // Table Content from Database
       let rowId = `row${row.id}`;
@@ -74,7 +87,6 @@ function displayData(data) {
 
       currentItems.push(row.id);
 
-      //console.log(tr);
       body.appendChild(tr);
     });
 
@@ -107,9 +119,7 @@ async function loadData(condition = null) {
     condition === "start"
   ) {
     try {
-      const response = await fetch(
-        `/table/accounts?page=${currentPage}&limit=15`,
-      );
+      const response = await fetch(`/table/accounts?page=${currentPage}&limit=15`);
       const data = await response.json();
 
       if (data.rows.length < 10) lastPage = true;
