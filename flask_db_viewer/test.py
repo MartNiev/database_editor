@@ -1,7 +1,7 @@
 import sqlite3
 from flask import jsonify, request
 
-DB_File = "/Users/manie/Documents/VSCode/Small_Projects/Database/flask_db_viewer/bank.db"
+DB_File = "/Users/manie/Documents/VSCode/Small_Projects/Database/flask_db_viewer/databases/bank_large.db"
 
 
 def get_connection():
@@ -12,17 +12,6 @@ def get_data(table_name):
     conn = get_connection()
     cursor = conn.cursor()
 
-
-    cursor.execute(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name=?",
-        (table_name,)
-    )
-        
-    result = cursor.fetchone()
-    if not result:
-        return jsonify({"error": f"Table '{table_name}' does not exist"}), 404
-
-
     cursor.execute(f"SELECT first_name, last_name, account, balance FROM {table_name}")
     rows = cursor.fetchall()
       
@@ -32,6 +21,11 @@ def get_data(table_name):
 
     data = [dict(zip(col_names, row)) for row in rows]
 
+    for row in rows:
+         for cells in row:
+            # print(cells)
+            pass
+      
     print(data)
 
 if __name__ == "__main__":

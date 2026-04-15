@@ -1,10 +1,12 @@
 from flask import Flask, jsonify, request, render_template, make_response
 import sqlite3
 import random
+import json
+
 
 app = Flask(__name__)
 
-DB_File = "/Users/manie/Documents/VSCode/Small_Projects/Database/flask_db_viewer/databases/bank.db"
+DB_File = "/Users/manie/Documents/VSCode/Small_Projects/Database/flask_db_viewer/databases/bank_large.db"
 
 def get_connection():
     return sqlite3.connect(DB_File)
@@ -29,30 +31,20 @@ def list_table(table_name):
     offset = (page - 1) * limit
 
     try:
-        cursor.execute(
-            "SELECT name FROM sqlite_master WHERE type='table' AND name=?",
-            (table_name,)
-        )
-
-        result = cursor.fetchone()
-
-        if not result:
-            return jsonify({"error": f"Table '{table_name}' does not exist"}), 404
-
         cursor.execute(f"SELECT id, first_name, last_name, account, balance FROM {table_name} LIMIT ? OFFSET ?;", (limit, offset))
   
         rows = cursor.fetchall()
-
-        col_names = [description[0] for description in cursor.description]
-    
+        colunmNames = [description[0] for description in cursor.description]
+        
         conn.close()
+        dataObject = [dict(zip(colunmNames, row)) for row in rows]   
 
-        data = [dict(zip(col_names, row)) for row in rows]
+        app.json.sort_keys = False
 
         return jsonify({
             "page": page,
             "limit" : limit,
-            "rows" : data
+            "rows" : dataObject
         })
     
     except Exception as e:
@@ -70,17 +62,19 @@ def delete(table_name):
         cursor.execute(f"DELETE FROM '{table_name}' WHERE id = ?",(id,))
         
         conn.commit()
-        cursor.close()
+        conn.close()
 
         return jsonify({"success": True})
     except Exception as e:
+        conn.close()
         return jsonify({"Error": str(e)}), 500
 
 @app.route("/data/addClient")
 def addClient():
-    conn = get_connection()
-    cursor = conn.cursor()
     try:
+        conn = get_connection()
+        cursor = conn.cursor()
+        
         firstName = request.args.get("firstName", default="", type=str)
         lastName = request.args.get("lastName", default="", type=str)
         account = random.randint(10000, 99999)
@@ -89,14 +83,43 @@ def addClient():
         cursor.execute(f"INSERT INTO accounts ('first_name', 'last_name', 'account', 'balance') VALUES ('{firstName}', '{lastName}', '{account}', '{balance}');")
         
         conn.commit()
-        cursor.close()
+        conn.close()
 
-        print(firstName, lastName, account, balance)
+        # print(firstName, lastName, account, balance)
         return jsonify({"success": True})
     except Exception as e:
+        conn.close()
         return jsonify({"Error": e})
     
 
-    
+@app.route("/data/edit_data")
+def edit():
+    print("Running")
+    try: 
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        rowid = request.args.get("id", default="", type=int)
+        firstName = request.args.get("firstName", default="", type=str)
+        lastName = request.args.get("lastName", default="", type=str)
+        print(f"{rowid} {firstName} {lastName}")
+        # Not editing the record
+
+        print(len(firstName))
+
+        if len(firstName) > 0:
+            cursor.execute("UPDATE accounts SET first_name = ? WHERE id = ?",(firstName, rowid))
+        if len(lastName) > 0:
+            cursor.execute("UPDATE accounts SET last_name = ? WHERE id = ?",(lastName, rowid))
+        
+
+        conn.commit()
+        conn.close()
+
+        return jsonify({"success": True})
+    except Exception as e:
+        conn.close()
+        return jsonify({"Error": e})
+
 if __name__ == "__main__":
     app.run(debug=True)

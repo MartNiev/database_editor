@@ -7,11 +7,6 @@ let deleteListObj = {
 
 function deleteMessage() {
   deleteListObj.clearArray();
-  // const messageContainer = document.getElementById("iframeContainer");
-  // const messageWindow = document.createElement("iframe");
-  // messageWindow.src = "/delete_data";
-  // messageWindow.id = "popUpWindow";
-  // messageContainer.appendChild(messageWindow);
 
   const messageContainer = document.getElementById("iframeContainer");
   const popUp = document.createElement("div");

@@ -18,13 +18,16 @@ function checkBox(container, rowId, tr) {
   });
 }
 
-function editButtons(tr) {
+function editButtons(tr, id) {
   let editContainer = document.createElement("td");
   editContainer.style.width = "42px";
 
   let editButton = document.createElement("button");
+  editButton.id = `editRow${id}`;
+  let onclickName = `editPage(${String(id)})`;
+  editButton.setAttribute("onclick", onclickName);
+
   let text = document.createTextNode("Edit");
-  editButton.setAttribute("onclick", "editPage()");
   editButton.append(text);
 
   editContainer.appendChild(editButton);
@@ -45,8 +48,7 @@ function displayData(data) {
       messageText.remove();
     }
 
-    const headerNames = ["Edit", "Account Number", "Balance", "First Name", "Last Name"];
-
+    const headerNames = ["Edit", "First Name", "Last Name", "Account Number", "Balance"];
     let checkContainer = document.createElement("th");
     headerRow.appendChild(checkContainer);
 
@@ -67,7 +69,7 @@ function displayData(data) {
       tr.appendChild(checkContainer);
 
       checkBox(checkContainer, row.id, tr);
-      editButtons(tr);
+      editButtons(tr, row.id);
 
       // Table Content from Database
       let rowId = `row${row.id}`;
@@ -75,13 +77,20 @@ function displayData(data) {
       for (const key in row) {
         let value = row[key];
 
+        // console.log(key);
+
         if (key !== "id") {
           let td = document.createElement("td");
+          tr.appendChild(td);
+          if (key == "balance") {
+            valueStr = `$ ${value.toFixed(2)}`;
+            td.textContent = valueStr;
+            break;
+          }
+
           td.textContent = value;
           tr.id = rowId;
           tr.className = "rowBehavior";
-
-          tr.appendChild(td);
         }
       }
 
@@ -126,8 +135,9 @@ async function loadData(condition = null) {
       if (data.page === 1) startPage = true;
       else startPage = false;
 
-      // console.log(data);
+      console.log(data);
       displayData(data);
+      localStorage.setItem("data", JSON.stringify(data.rows));
     } catch (error) {
       console.log("Error loading data: " + error);
     }
