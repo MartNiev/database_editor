@@ -2,11 +2,20 @@ from flask import Flask, jsonify, request, render_template, make_response
 import sqlite3
 import random
 import json
-
+import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
-DB_File = "/Users/manie/Documents/VSCode/Small_Projects/Database/flask_db_viewer/databases/bank_large.db"
+dbFolder = "/Users/manie/Documents/VSCode/Small_Projects/Database/app/userDB"
+
+def getDBPath():
+    fileInDir = os.listdir(dbFolder)
+    filename = secure_filename(fileInDir)
+    # os.path.join(dbFolder, filename)
+    print(filename)
+
+DB_File = ""
 
 def get_connection():
     return sqlite3.connect(DB_File)
@@ -16,11 +25,32 @@ def get_connection():
 def home():
    return render_template("index.html")
 
+@app.route("/yourdatabase")
+def dbPage():
+    return render_template("database.html")
+
 @app.route("/delete_data")
 def deleteData():
     return render_template("deletionConfirmation.html")
 
+@app.route("/uploadDB", methods=['POST'])
+def uploadDB():
+    try:
+        file = request.files['file']
+        dbFolder = "/Users/manie/Documents/VSCode/Small_Projects/Database/app/userDB"
+        filename = secure_filename(file.filename)
+        destinationPath = os.path.join(dbFolder, filename)
+        file.save(destinationPath)
+        global DB_File
+        DB_File = destinationPath
+        # getDBPath()
 
+        return jsonify({"success": True})
+    except Exception as e:
+        return ({"Error": str(e)})
+
+
+    
 @app.route("/table/<table_name>")
 def list_table(table_name):
     conn = get_connection()
@@ -49,7 +79,7 @@ def list_table(table_name):
     
     except Exception as e:
         conn.close()
-        return ({"Error": (e)}), 500
+        return ({"Error": str(e)})
 
 @app.route("/table/<table_name>/delete")
 def delete(table_name):
@@ -67,7 +97,7 @@ def delete(table_name):
         return jsonify({"success": True})
     except Exception as e:
         conn.close()
-        return jsonify({"Error": str(e)}), 500
+        return jsonify({"Error": str(e)})
 
 @app.route("/data/addClient")
 def addClient():
@@ -89,7 +119,7 @@ def addClient():
         return jsonify({"success": True})
     except Exception as e:
         conn.close()
-        return jsonify({"Error": e})
+        return jsonify({"Error": str(e)})
     
 
 @app.route("/data/edit_data")
@@ -119,7 +149,7 @@ def edit():
         return jsonify({"success": True})
     except Exception as e:
         conn.close()
-        return jsonify({"Error": e})
+        return jsonify({"Error": str(e)})
 
 if __name__ == "__main__":
     app.run(debug=True)
