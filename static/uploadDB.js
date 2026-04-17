@@ -20,6 +20,7 @@ function uploadDB() {
 
   if (fileExtenstion !== ".db") {
     alert("File MUST be a .db file");
+    return;
     // Add functionality to clear input
   }
 

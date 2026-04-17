@@ -13,7 +13,7 @@ function deleteMessage() {
   popUp.id = "popUpWindow";
   popUp.innerHTML = `<div class="deletionContainer">
       <div class="messageBox">
-        <header><h2>Are you sure you want to delete?</h2></header>
+        <header class="headerPopUp"><h2>Are you sure you want to delete?</h2></header>
         <div class="yesOrNoBt">
           <button class="pageBt" onclick="deleteData()">Yes</button>
           <button class="pageBt" onclick="cancel()">No</button>

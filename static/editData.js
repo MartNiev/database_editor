@@ -19,7 +19,7 @@ function editPage(id) {
   popUp.id = "popUpWindow";
   popUp.innerHTML = `<section class="addDataContainer">
       <div class="messageBox">
-        <header><h1>Edit Data</h1></header>
+        <header class="headerPopUp" ><h1>Edit Data</h1></header>
           <div class="editName" id="boxContainer0">
             <div id=dynamicContainer0>
               <p class="name" id="firstName">${firstName}</p>

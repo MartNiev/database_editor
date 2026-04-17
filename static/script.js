@@ -41,6 +41,8 @@ function displayData(data) {
   headerRow.innerHTML = "";
   body.innerHTML = "";
 
+  if 
+
   // console.log(data.rows);
   if (data.rows.length > 0) {
     let messageText = document.getElementById("messageText");
@@ -145,3 +147,7 @@ async function loadData(condition = null) {
 }
 
 loadData("start");
+
+function home() {
+  window.location.href = "/";
+}

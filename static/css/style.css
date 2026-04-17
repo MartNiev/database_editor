@@ -9,12 +9,22 @@ body {
   gap: 2px;
 }
 
-header {
+.header {
   margin: 0px;
+  font-size: 28px;
+  text-align: center;
+}
+
+.headerPopUp {
+  margin: 0px;
+  font-size: 14px;
   text-align: center;
 }
 
 .nav {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
   margin: 0px;
   width: 100%;
   height: 25px;
@@ -25,10 +35,10 @@ header {
 .actionButtons {
   all: unset;
   margin: 0pxl;
-  height: 100%;
-  width: 60px;
+  height: 90%;
+  width: 80px;
   text-align: center;
-  border: 0px;
+  border: solid 1px #b1b1b1;
   border-radius: 0px;
   font-size: 15px;
 }
@@ -197,4 +207,50 @@ th {
 
 .editInput::placeholder {
   font-size: 15px;
+}
+
+.landingMain {
+  width: 100%;
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.uploadForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  gap: 20px;
+}
+
+.uploadForm button {
+  width: 60px;
+}
+
+.upload {
+  width: 30%;
+  height: 50%;
+}
+
+#dbFile {
+  all: unset;
+  /* color: #f2f2f2; */
+  text-align: center;
+  margin: 0px;
+  width: 50%;
+  background-color: #9e9e9e;
+}
+
+.welcomeMessage {
+  font-size: 20px;
+  text-align: center;
+}
+
+.message {
+  font-size: 15px;
+  text-align: center;
 }

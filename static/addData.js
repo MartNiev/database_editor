@@ -4,7 +4,7 @@ function addPopUp() {
   popUp.id = "popUpWindow";
   popUp.innerHTML = `<section class="addDataContainer">
       <div class="messageBox">
-        <header><h1>Add Data</h1></header>
+        <header class="headerPopUp"><h1>Add Data</h1></header>
         <form class="userForm">
           <input type="text" id="firstName" placeholder="First Name" />
           <input type="text" id="lastName" placeholder="Last Name" />

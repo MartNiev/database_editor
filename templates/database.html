@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Database</title>
+    <title>Database Editor</title>
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}" />
     <link
       href="https://fonts.googleapis.com/css2?family=LINE+Seed+JP&display=swap"
@@ -12,12 +12,14 @@
   </head>
   <body>
     <div id="iframeContainer"></div>
-    <header><h1>Database</h1></header>
+    <header class="header"><h1>Database Editor</h1></header>
 
     <section id="mainSection">
       <nav class="nav">
+        <button class="actionButtons" onclick="home()">Upload</button>
         <button class="actionButtons" id="deleteBt" onclick="deleteMessage()">Delete</button>
         <button class="actionButtons" onclick="addPopUp()">Add</button>
+        <button class="actionButtons" onclick="">Download</button>
       </nav>
 
       <div id="message"></div>
@@ -41,5 +43,6 @@
     <script src="{{ url_for('static', filename='deleteData.js') }}"></script>
     <script src="{{ url_for('static', filename='addData.js') }}"></script>
     <script src="{{ url_for('static', filename='editData.js') }}"></script>
+    <script src="{{ url_for('static', filename='download.js') }}"></script>
   </body>
 </html>
