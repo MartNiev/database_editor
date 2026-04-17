@@ -7,14 +7,6 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
-dbFolder = "/Users/manie/Documents/VSCode/Small_Projects/Database/app/userDB"
-
-def getDBPath():
-    fileInDir = os.listdir(dbFolder)
-    filename = secure_filename(fileInDir)
-    # os.path.join(dbFolder, filename)
-    print(filename)
-
 DB_File = ""
 
 def get_connection():
@@ -37,7 +29,7 @@ def deleteData():
 def uploadDB():
     try:
         file = request.files['file']
-        dbFolder = "/Users/manie/Documents/VSCode/Small_Projects/Database/app/userDB"
+        dbFolder = "/Users/manie/Documents/VSCode/Small_Projects/Database/userDB"
         filename = secure_filename(file.filename)
         destinationPath = os.path.join(dbFolder, filename)
         file.save(destinationPath)
