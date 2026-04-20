@@ -1,1 +1,6 @@
-/sample_databases
+# Ignore a folder and its contents
+sample_databases/
+userDB/
+
+# If you want to ignore a specific file
+test.py

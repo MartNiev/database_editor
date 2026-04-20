@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template, make_response
+from flask import Flask, jsonify, request, render_template, url_for, redirect, send_from_directory, make_response
 import sqlite3
 import random
 import json
@@ -7,7 +7,10 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
+
 DB_File = ""
+userFolder = ""
+currentDb = ""
 
 def get_connection():
     return sqlite3.connect(DB_File)
@@ -19,7 +22,13 @@ def home():
 
 @app.route("/yourdatabase")
 def dbPage():
-    return render_template("database.html")
+    global DB_File
+
+    print(DB_File)
+    if DB_File == "":
+        return redirect(url_for('home'))
+    else:
+        return render_template("database.html")
 
 @app.route("/delete_data")
 def deleteData():
@@ -29,14 +38,18 @@ def deleteData():
 def uploadDB():
     try:
         file = request.files['file']
-        dbFolder = "/Users/manie/Documents/VSCode/Small_Projects/Database/userDB"
+        dbFolder = "userDB/"
         filename = secure_filename(file.filename)
         destinationPath = os.path.join(dbFolder, filename)
         file.save(destinationPath)
-        global DB_File
-        DB_File = destinationPath
-        # getDBPath()
-
+    
+        global DB_File, userFolder, currentDb
+        
+        DB_File = destinationPath 
+        userFolder = dbFolder
+        currentDb = filename
+        print("DEBUG: " + userFolder + currentDb)
+        
         return jsonify({"success": True})
     except Exception as e:
         return ({"Error": str(e)})
@@ -141,6 +154,17 @@ def edit():
         return jsonify({"success": True})
     except Exception as e:
         conn.close()
+        return jsonify({"Error": str(e)})
+
+@app.route("/download")
+def download_file():
+    try:
+        global userFolder, currentDb
+        print("DEBUG: " + userFolder)
+        print("DEBUG: " + currentDb)
+
+        return send_from_directory(userFolder, currentDb, as_attachment=True)
+    except Exception as e:
         return jsonify({"Error": str(e)})
 
 if __name__ == "__main__":

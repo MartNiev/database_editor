@@ -34,81 +34,103 @@ function editButtons(tr, id) {
   tr.appendChild(editContainer);
 }
 
-function displayData(data) {
+function createTableHeader(data) {
   const headerRow = document.getElementById("table-header");
-  const body = document.getElementById("table-body");
-
   headerRow.innerHTML = "";
-  body.innerHTML = "";
 
-  if 
-
-  // console.log(data.rows);
   if (data.rows.length > 0) {
     let messageText = document.getElementById("messageText");
     if (messageText !== null) {
       messageText.remove();
     }
+  }
+  const headerNames = ["Edit", "First Name", "Last Name", "Account Number", "Balance"];
 
-    const headerNames = ["Edit", "First Name", "Last Name", "Account Number", "Balance"];
-    let checkContainer = document.createElement("th");
-    headerRow.appendChild(checkContainer);
+  //Dynamically get the column names from data.rows
+  for (const row in data.rows) {
+    // console.log(row);
+  }
 
-    headerNames.forEach((col) => {
-      let th = document.createElement("th");
-      th.textContent = col;
-      headerRow.appendChild(th);
-    });
+  let checkContainer = document.createElement("th");
+  headerRow.appendChild(checkContainer);
 
-    let currentItems = [];
+  headerNames.forEach((col) => {
+    let th = document.createElement("th");
+    th.textContent = col;
+    headerRow.appendChild(th);
+  });
 
-    data.rows.forEach((row) => {
-      let tr = document.createElement("tr");
-      tr.setAttribute("onchange", `getCheckedBoxes(${row.id})`);
+  // console.log(data);
+}
 
-      let checkContainer = document.createElement("td");
-      checkContainer.id = "checkContainer";
-      tr.appendChild(checkContainer);
+function createTableBody(data) {
+  const body = document.getElementById("table-body");
+  body.innerHTML = "";
 
-      checkBox(checkContainer, row.id, tr);
-      editButtons(tr, row.id);
+  let currentItems = [];
 
-      // Table Content from Database
-      let rowId = `row${row.id}`;
+  data.rows.forEach((row) => {
+    let tr = document.createElement("tr");
+    tr.setAttribute("onchange", `getCheckedBoxes(${row.id})`);
 
-      for (const key in row) {
-        let value = row[key];
+    let checkContainer = document.createElement("td");
+    checkContainer.id = "checkContainer";
+    tr.appendChild(checkContainer);
 
-        // console.log(key);
+    checkBox(checkContainer, row.id, tr);
+    editButtons(tr, row.id);
 
-        if (key !== "id") {
-          let td = document.createElement("td");
-          tr.appendChild(td);
-          if (key == "balance") {
-            valueStr = `$ ${value.toFixed(2)}`;
-            td.textContent = valueStr;
-            break;
-          }
+    // Table Content from Database
+    let rowId = `row${row.id}`;
 
-          td.textContent = value;
-          tr.id = rowId;
-          tr.className = "rowBehavior";
+    for (const key in row) {
+      let value = row[key];
+
+      // console.log(key);
+
+      if (key !== "id") {
+        let td = document.createElement("td");
+        tr.appendChild(td);
+        if (key == "balance") {
+          valueStr = `$ ${value.toFixed(2)}`;
+          td.textContent = valueStr;
+          break;
         }
+
+        td.textContent = value;
+        tr.id = rowId;
+        tr.className = "rowBehavior";
       }
+    }
 
-      currentItems.push(row.id);
+    currentItems.push(row.id);
 
-      body.appendChild(tr);
-    });
+    body.appendChild(tr);
+  });
 
-    localStorage.setItem("currentItems", currentItems);
-  } else {
-    const messageContainer = document.getElementById("message");
+  localStorage.setItem("currentItems", currentItems);
+}
+
+function displayData(data) {
+  if (data.rows.length === 0) {
+    const messageContainer = document.getElementById("noDataMessage");
+    messageContainer.style.height = "250px";
     let message = document.createElement("h2");
     message.id = "messageText";
-    message.textContent = "No data found";
+    message.textContent = "No data was found in your .db file";
     messageContainer.appendChild(message);
+    return;
   }
+
+  let buttons = document.getElementById("buttons");
+
+  buttons.innerHTML = `
+  <button class="pageBt" onclick="loadData('prev')">Prev Page</button>
+  <button class="pageBt" onclick="loadData('next')">Next Page</button>
+  `;
+
+  createTableHeader(data);
+  createTableBody(data);
 }
 
 let currentPage;
@@ -136,12 +158,13 @@ async function loadData(condition = null) {
       if (data.rows.length < 10) lastPage = true;
       if (data.page === 1) startPage = true;
       else startPage = false;
-
-      console.log(data);
+      //
+      // console.log(data);
       displayData(data);
+
       localStorage.setItem("data", JSON.stringify(data.rows));
     } catch (error) {
-      console.log("Error loading data: " + error);
+      console.log("Error loading data: " + error.message);
     }
   }
 }

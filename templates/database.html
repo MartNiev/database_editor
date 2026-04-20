@@ -19,10 +19,10 @@
         <button class="actionButtons" onclick="home()">Upload</button>
         <button class="actionButtons" id="deleteBt" onclick="deleteMessage()">Delete</button>
         <button class="actionButtons" onclick="addPopUp()">Add</button>
-        <button class="actionButtons" onclick="">Download</button>
+        <button class="actionButtons" onclick="download()">Download</button>
       </nav>
 
-      <div id="message"></div>
+      <div id="noDataMessage"></div>
 
       <div class="container">
         <table id="dataTable">
@@ -32,10 +32,7 @@
           <tbody id="table-body"></tbody>
         </table>
 
-        <div class="buttons">
-          <button class="pageBt" onclick="loadData('prev')">Prev Page</button>
-          <button class="pageBt" onclick="loadData('next')">Next Page</button>
-        </div>
+        <div id="buttons"></div>
       </div>
     </section>
 

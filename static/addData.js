@@ -39,7 +39,7 @@ function addData() {
         return;
       } else {
         document.getElementById("popUpWindow").remove();
-        window.location.href = "/";
+        window.location.href = "/yourdatabase";
       }
     } catch (error) {
       alert(`Error adding data ${error.message}`);
