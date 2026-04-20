@@ -44,11 +44,34 @@ function createTableHeader(data) {
       messageText.remove();
     }
   }
-  const headerNames = ["Edit", "First Name", "Last Name", "Account Number", "Balance"];
+  const headerNames = ["Edit"];
 
   //Dynamically get the column names from data.rows
-  for (const row in data.rows) {
-    // console.log(row);
+  for (const headerName of data.columnNames) {
+    if (headerName !== "id") {
+      let formattedHeader = "";
+      let value = headerName.replace("_", " ");
+
+      let capFirstLetter = value[0].toUpperCase();
+      formattedHeader += capFirstLetter;
+
+      let isSpaceFound = false;
+      for (let i = 1; i < headerName.length; i++) {
+        if (isSpaceFound) {
+          formattedHeader += value[i].toUpperCase();
+          isSpaceFound = false;
+          continue;
+        }
+
+        if (value[i] === " ") {
+          isSpaceFound = true;
+        }
+
+        formattedHeader += value[i];
+      }
+
+      headerNames.push(formattedHeader);
+    }
   }
 
   let checkContainer = document.createElement("th");
@@ -71,6 +94,7 @@ function createTableBody(data) {
 
   data.rows.forEach((row) => {
     let tr = document.createElement("tr");
+    console.log(row);
     tr.setAttribute("onchange", `getCheckedBoxes(${row.id})`);
 
     let checkContainer = document.createElement("td");
@@ -85,16 +109,15 @@ function createTableBody(data) {
 
     for (const key in row) {
       let value = row[key];
-
-      // console.log(key);
+      console.log(key);
 
       if (key !== "id") {
         let td = document.createElement("td");
+
         tr.appendChild(td);
         if (key == "balance") {
           valueStr = `$ ${value.toFixed(2)}`;
           td.textContent = valueStr;
-          break;
         }
 
         td.textContent = value;
@@ -152,14 +175,14 @@ async function loadData(condition = null) {
     condition === "start"
   ) {
     try {
-      const response = await fetch(`/table/accounts?page=${currentPage}&limit=15`);
+      const response = await fetch(`/loadTable/accounts?page=${currentPage}&limit=15`);
       const data = await response.json();
 
       if (data.rows.length < 10) lastPage = true;
       if (data.page === 1) startPage = true;
       else startPage = false;
       //
-      // console.log(data);
+      console.log(data);
       displayData(data);
 
       localStorage.setItem("data", JSON.stringify(data.rows));

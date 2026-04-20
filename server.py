@@ -56,8 +56,8 @@ def uploadDB():
 
 
     
-@app.route("/table/<table_name>")
-def list_table(table_name):
+@app.route("/loadTable/<table_name>")
+def loadTable(table_name):
     conn = get_connection()
     cursor = conn.cursor()
 
@@ -66,11 +66,13 @@ def list_table(table_name):
     offset = (page - 1) * limit
 
     try:
-        cursor.execute(f"SELECT id, first_name, last_name, account, balance FROM {table_name} LIMIT ? OFFSET ?;", (limit, offset))
+        cursor.execute(f"SELECT * FROM {table_name} LIMIT ? OFFSET ?;", (limit, offset))
   
         rows = cursor.fetchall()
         colunmNames = [description[0] for description in cursor.description]
         
+        print(colunmNames)
+
         conn.close()
         dataObject = [dict(zip(colunmNames, row)) for row in rows]   
 
@@ -79,6 +81,7 @@ def list_table(table_name):
         return jsonify({
             "page": page,
             "limit" : limit,
+            "columnNames": colunmNames,
             "rows" : dataObject
         })
     
