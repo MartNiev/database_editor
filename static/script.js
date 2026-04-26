@@ -34,6 +34,9 @@ function editButtons(tr, id) {
   tr.appendChild(editContainer);
 }
 
+let columnNames = [];
+let originalColumnNames = { columnNames: [] };
+
 function createTableHeader(data) {
   const headerRow = document.getElementById("table-header");
   headerRow.innerHTML = "";
@@ -50,7 +53,10 @@ function createTableHeader(data) {
   for (const headerName of data.columnNames) {
     if (headerName !== "id") {
       let formattedHeader = "";
+      originalColumnNames.columnNames.push(headerName);
       let value = headerName.replace("_", " ");
+
+      columnNames.push(value.replace(" ", "").toLowerCase());
 
       let capFirstLetter = value[0].toUpperCase();
       formattedHeader += capFirstLetter;
@@ -74,6 +80,8 @@ function createTableHeader(data) {
     }
   }
 
+  localStorage.setItem("ogColumnNames", JSON.stringify(originalColumnNames));
+
   let checkContainer = document.createElement("th");
   headerRow.appendChild(checkContainer);
 
@@ -91,10 +99,11 @@ function createTableBody(data) {
   body.innerHTML = "";
 
   let currentItems = [];
+  // console.log(columnNames);
 
   data.rows.forEach((row) => {
     let tr = document.createElement("tr");
-    console.log(row);
+    // console.log(row);
     tr.setAttribute("onchange", `getCheckedBoxes(${row.id})`);
 
     let checkContainer = document.createElement("td");
@@ -107,12 +116,15 @@ function createTableBody(data) {
     // Table Content from Database
     let rowId = `row${row.id}`;
 
+    let idx = 0;
     for (const key in row) {
       let value = row[key];
-      console.log(key);
 
       if (key !== "id") {
         let td = document.createElement("td");
+        rowNum = row.id;
+        tdID = columnNames[idx] + rowNum;
+        td.id = tdID;
 
         tr.appendChild(td);
         if (key == "balance") {
@@ -123,8 +135,12 @@ function createTableBody(data) {
         td.textContent = value;
         tr.id = rowId;
         tr.className = "rowBehavior";
+
+        idx++;
       }
     }
+
+    idx = 0;
 
     currentItems.push(row.id);
 

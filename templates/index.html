@@ -20,12 +20,20 @@
       In this website you can delete, edit and add data to you database straight from your browser
     </p>
     <section class="landingMain">
-      <div class="formContainer upload">
-        <form class="uploadForm">
-          <input type="file" id="dbFile" name="dbFile" accept=".db" />
-          <button type="button" class="pageBt" onclick="uploadDB()">Upload</button>
-        </form>
-      </div>
+      <form class="uploadForm">
+        <div class="formContainer uploadBt">
+          <label for="dbFile" id="uploadImg">
+            <img
+              src="{{url_for('static', filename='uploadIcon.svg')}}"
+              alt="upload"
+              width="150px"
+            />
+          </label>
+          <input type="file" id="dbFile" name="dbFile" accept=".db" single />
+        </div>
+
+        <button class="pageBt" onclick="uploadDB()">Upload</button>
+      </form>
     </section>
 
     <script src="{{url_for('static', filename='uploadDB.js')}}"></script>

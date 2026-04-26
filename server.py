@@ -71,7 +71,6 @@ def loadTable(table_name):
         rows = cursor.fetchall()
         colunmNames = [description[0] for description in cursor.description]
         
-        print(colunmNames)
 
         conn.close()
         dataObject = [dict(zip(colunmNames, row)) for row in rows]   
@@ -130,28 +129,22 @@ def addClient():
         return jsonify({"Error": str(e)})
     
 
-@app.route("/data/edit_data")
+@app.route("/data/edit_data", methods=['POST'])
 def edit():
     print("Running")
     try: 
         conn = get_connection()
         cursor = conn.cursor()
 
-        rowid = request.args.get("id", default="", type=int)
-        firstName = request.args.get("firstName", default="", type=str)
-        lastName = request.args.get("lastName", default="", type=str)
-        print(f"{rowid} {firstName} {lastName}")
-        # Not editing the record
+        data = request.get_json()
+        id = data.get('id')
+        name = data.get('name')
 
-        print(len(firstName))
-
-        if len(firstName) > 0:
-            cursor.execute("UPDATE accounts SET first_name = ? WHERE id = ?",(firstName, rowid))
-        if len(lastName) > 0:
-            cursor.execute("UPDATE accounts SET last_name = ? WHERE id = ?",(lastName, rowid))
+        for key in name:
+            value = name.get(key)
+            cursor.execute(f"UPDATE accounts SET {key} = ? WHERE id = ?",(value, id))
+            conn.commit()
         
-
-        conn.commit()
         conn.close()
 
         return jsonify({"success": True})

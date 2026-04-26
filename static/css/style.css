@@ -195,12 +195,20 @@ th {
   gap: 8px;
 }
 
+#editBoxes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 20px;
+}
+
 .editName {
   display: flex;
   justify-content: space-between;
-  margin: 10px;
   padding: 4px;
-  height: 50px;
+  height: 45px;
+  width: 250px;
   border: solid 1px #ececec;
   border-radius: 5px;
 }
@@ -228,7 +236,7 @@ th {
 
 .landingMain {
   width: 100%;
-  height: 50vh;
+  height: 70vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -240,6 +248,7 @@ th {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100vw;
   height: 100%;
   gap: 20px;
 }
@@ -248,19 +257,32 @@ th {
   width: 60px;
 }
 
-.upload {
-  width: 30%;
-  height: 50%;
+#dataTable {
+  background-color: white;
+  box-shadow: 0px 3px 5px 0px rgb(100, 100, 100);
+}
+
+.uploadBt {
+  width: 350px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #dbFile {
   all: unset;
   text-align: center;
   margin: 0px;
-  width: 300px;
+
+  /* background-color: #777777; */
+  display: none;
 }
 
-#dataTable {
-  background-color: white;
-  box-shadow: 0px 3px 5px 0px rgb(100, 100, 100);
+#uploadImg:hover {
+  opacity: 40%;
+}
+
+#uploadImg:active {
+  opacity: 90%;
 }
