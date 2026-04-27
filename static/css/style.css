@@ -199,7 +199,6 @@ th {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
   margin: 20px;
 }
 
@@ -209,8 +208,17 @@ th {
   padding: 4px;
   height: 45px;
   width: 250px;
+  margin-bottom: 15px;
   border: solid 1px #ececec;
   border-radius: 5px;
+}
+
+#editLabel {
+  width: 250px;
+  padding: 0px;
+  margin: 0px;
+  text-align: start;
+  font-size: 13px;
 }
 
 .name {

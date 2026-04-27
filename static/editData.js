@@ -2,8 +2,12 @@ let currentRow;
 
 let inc = 0;
 
-function createElement(id, value) {
+function createElement(id, value, boxLabel) {
   let editBoxes = document.getElementById("editBoxes");
+  let label = document.createElement("p");
+  label.textContent = boxLabel;
+  label.id = "editLabel";
+  editBoxes.appendChild(label);
 
   let boxContainer = document.createElement("div");
   boxContainer.className = "editName";
@@ -36,6 +40,7 @@ function editPage(id) {
 
   let data = JSON.parse(localStorage.getItem("data"));
   var originalColumnNames = JSON.parse(localStorage.getItem("ogColumnNames"));
+  var formattedColumns = JSON.parse(localStorage.getItem("formattedColumns"));
   currentRow = `row${id}`;
 
   const messageContainer = document.getElementById("iframeContainer");
@@ -54,7 +59,7 @@ function editPage(id) {
       </div>
     </section>`;
   messageContainer.appendChild(popUp);
-
+  let idx = 0;
   for (const prop in data) {
     if (data[prop].id === id) {
       rowObject = data[prop];
@@ -65,13 +70,13 @@ function editPage(id) {
         if (key !== "id") {
           let newKey = key.replace("_", "");
           let value = rowObject[key];
+          let label = formattedColumns.columnNames[idx] + ": ";
+          console.log(label);
+          idx++;
 
-          createElement(newKey, value);
+          createElement(newKey, value, label);
         }
       }
-
-      var firstName = data[prop].first_name;
-      var lastName = data[prop].last_name;
 
       break;
     }
