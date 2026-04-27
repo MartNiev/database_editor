@@ -10,6 +10,14 @@ function getFileExtension(filename) {
   return fileExtenstion;
 }
 
+function changeIcon() {
+  let image = document.getElementById("uploadImage");
+  image.src = "static/images/uploadedFile.svg";
+  image.alt = "Uploaded";
+  let imageContainer = document.getElementById("imageContainer");
+  imageContainer.id = "imageContainerUploaded";
+}
+
 function uploadDB() {
   let fileInput = document.getElementById("dbFile");
   let file = fileInput.files[0];
@@ -21,7 +29,6 @@ function uploadDB() {
   if (fileExtenstion !== ".db") {
     alert("File MUST be a .db file");
     return;
-    // Add functionality to clear input
   }
 
   async function upload() {
@@ -45,3 +52,21 @@ function uploadDB() {
 
   upload();
 }
+
+let imageContainer = document.getElementById("imageContainer");
+
+imageContainer.ondragover = (event) => {
+  event.preventDefault();
+};
+
+imageContainer.ondrop = (event) => {
+  event.preventDefault();
+  let dbFile = document.getElementById("dbFile");
+
+  const dataTransfer = new DataTransfer();
+
+  dataTransfer.items.add(event.dataTransfer.files[0]);
+  dbFile.files = dataTransfer.files;
+
+  changeIcon();
+};

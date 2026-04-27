@@ -239,8 +239,8 @@ th {
   height: 70vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-evenly;
+  /* align-items: center; */
 }
 
 .uploadForm {
@@ -262,27 +262,59 @@ th {
   box-shadow: 0px 3px 5px 0px rgb(100, 100, 100);
 }
 
-.uploadBt {
-  width: 350px;
-  height: 200px;
+.uploadContainer {
+  padding: 0px;
+  margin: 0px;
+  border: 2px dashed rgb(150, 150, 150);
+  background-color: #f2f2f2;
+  border-radius: 4px;
+  width: 450px;
+  height: 300px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 #dbFile {
-  all: unset;
-  text-align: center;
   margin: 0px;
-
-  /* background-color: #777777; */
   display: none;
 }
 
-#uploadImg:hover {
-  opacity: 40%;
+#imageContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #7d7d7d;
+}
+
+#imageContainerUploaded {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #7d7d7d;
+}
+
+#imageContainer:hover {
+  background-color: #ededed;
+}
+
+#uploadImg {
+  width: 100%;
+  height: 100%;
 }
 
 #uploadImg:active {
   opacity: 90%;
+}
+
+.addInput {
+  margin: 15px;
+  border: solid 2px #9d9d9d;
+  font-size: 15px;
 }

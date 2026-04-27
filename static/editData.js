@@ -58,7 +58,6 @@ function editPage(id) {
   for (const prop in data) {
     if (data[prop].id === id) {
       rowObject = data[prop];
-      // console.log(data[prop]);
 
       infoToEdit = [];
 
@@ -108,8 +107,6 @@ function editUI(name, idx) {
   let boxContainer = document.getElementById(boxContainerName);
   boxContainer.style.border = "solid 2px #6e6e6e";
   editInput.focus();
-
-  // Need to add columnName t
 }
 
 let editData = { name: {}, id: 0 };
@@ -117,12 +114,9 @@ let editData = { name: {}, id: 0 };
 function handleEdit(id) {
   console.log(editData);
   console.log(fieldArray);
-  // if (fieldArray.length === 0) return;
+  if (fieldArray.length === 0) return;
 
   const row = document.getElementById(currentRow);
-
-  console.log(originalColumnNames.columnNames);
-  console.log(fieldArray);
 
   for (const field of fieldArray) {
     let rowData = document.getElementById(field + id);
@@ -145,13 +139,10 @@ function handleEdit(id) {
 
   fieldArray = [];
 
-  // Send a JSON instead as part of the url
-  // Will send the
-
   async function editRequest(object) {
     try {
       const response = fetch("/data/edit_data", {
-        method: "POST",
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(object),
       });

@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template, url_for, redirect, send_from_directory, make_response
+from flask import Flask, jsonify, request, render_template, url_for, redirect, send_from_directory
 import sqlite3
 import random
 import json
@@ -88,7 +88,7 @@ def loadTable(table_name):
         conn.close()
         return ({"Error": str(e)})
 
-@app.route("/table/<table_name>/delete")
+@app.route("/table/<table_name>/delete", methods=['DELETE'])
 def delete(table_name):
     try:
         conn = get_connection()
@@ -106,30 +106,47 @@ def delete(table_name):
         conn.close()
         return jsonify({"Error": str(e)})
 
-@app.route("/data/addClient")
+@app.route("/data/addData", methods=["POST"])
 def addClient():
     try:
         conn = get_connection()
         cursor = conn.cursor()
         
-        firstName = request.args.get("firstName", default="", type=str)
-        lastName = request.args.get("lastName", default="", type=str)
-        account = random.randint(10000, 99999)
-        balance = 0.0
+        data = request.get_json()
 
-        cursor.execute(f"INSERT INTO accounts ('first_name', 'last_name', 'account', 'balance') VALUES ('{firstName}', '{lastName}', '{account}', '{balance}');")
+        print(data)
+
+        columns = ""
+        values = ""
+
+        inc = 0
+        for key in data:
+            value = data.get(key)
+            columns
+
+            if inc == 0:
+                columns += f"'{key}'"
+                values += f"'{value}'"
+                inc += 1
+            else:
+                columns += ", " + f"'{key}'"
+                values += ", " + f"'{value}'"
+
+        columns = f"({columns})"
+        values = F"({values})"
         
+        cursor.execute(f"INSERT INTO accounts {columns} VALUES {values};")
+    
         conn.commit()
         conn.close()
 
-        # print(firstName, lastName, account, balance)
         return jsonify({"success": True})
     except Exception as e:
         conn.close()
         return jsonify({"Error": str(e)})
     
 
-@app.route("/data/edit_data", methods=['POST'])
+@app.route("/data/edit_data", methods=['PUT'])
 def edit():
     print("Running")
     try: 

@@ -48,6 +48,7 @@ function createTableHeader(data) {
     }
   }
   const headerNames = ["Edit"];
+  const formattedColumns = { columnNames: [] };
 
   //Dynamically get the column names from data.rows
   for (const headerName of data.columnNames) {
@@ -65,6 +66,7 @@ function createTableHeader(data) {
       for (let i = 1; i < headerName.length; i++) {
         if (isSpaceFound) {
           formattedHeader += value[i].toUpperCase();
+
           isSpaceFound = false;
           continue;
         }
@@ -77,6 +79,8 @@ function createTableHeader(data) {
       }
 
       headerNames.push(formattedHeader);
+      formattedColumns.columnNames.push(formattedHeader);
+      localStorage.setItem("formattedColumns", JSON.stringify(formattedColumns));
     }
   }
 
@@ -90,8 +94,6 @@ function createTableHeader(data) {
     th.textContent = col;
     headerRow.appendChild(th);
   });
-
-  // console.log(data);
 }
 
 function createTableBody(data) {
@@ -99,11 +101,9 @@ function createTableBody(data) {
   body.innerHTML = "";
 
   let currentItems = [];
-  // console.log(columnNames);
 
   data.rows.forEach((row) => {
     let tr = document.createElement("tr");
-    // console.log(row);
     tr.setAttribute("onchange", `getCheckedBoxes(${row.id})`);
 
     let checkContainer = document.createElement("td");
@@ -127,10 +127,6 @@ function createTableBody(data) {
         td.id = tdID;
 
         tr.appendChild(td);
-        if (key == "balance") {
-          valueStr = `$ ${value.toFixed(2)}`;
-          td.textContent = valueStr;
-        }
 
         td.textContent = value;
         tr.id = rowId;
@@ -198,7 +194,6 @@ async function loadData(condition = null) {
       if (data.page === 1) startPage = true;
       else startPage = false;
       //
-      console.log(data);
       displayData(data);
 
       localStorage.setItem("data", JSON.stringify(data.rows));

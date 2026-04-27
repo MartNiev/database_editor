@@ -21,18 +21,30 @@
     </p>
     <section class="landingMain">
       <form class="uploadForm">
-        <div class="formContainer uploadBt">
+        <div class="uploadContainer">
           <label for="dbFile" id="uploadImg">
-            <img
-              src="{{url_for('static', filename='uploadIcon.svg')}}"
-              alt="upload"
-              width="150px"
-            />
+            <div id="imageContainer">
+              <img
+                src="{{url_for('static', filename='images/uploadFile.svg')}}"
+                alt="Upload"
+                width="125px"
+                draggable="false"
+                id="uploadImage"
+              />
+              <p>Drag and Drop or Click</p>
+            </div>
           </label>
-          <input type="file" id="dbFile" name="dbFile" accept=".db" single />
+          <input
+            type="file"
+            id="dbFile"
+            name="dbFile"
+            accept=".db"
+            single
+            onchange="changeIcon()"
+          />
         </div>
 
-        <button class="pageBt" onclick="uploadDB()">Upload</button>
+        <button type="type" class="pageBt" onclick="uploadDB()">Upload</button>
       </form>
     </section>
 

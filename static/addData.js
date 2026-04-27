@@ -1,4 +1,23 @@
+let inputs = [];
+
+function createAddElement(value) {
+  let addContainer = document.getElementById("addInputContainer");
+
+  let idName = value.replace(" ", "").toLowerCase() + "Input";
+  inputs.push(idName);
+
+  let addInput = document.createElement("input");
+  addInput.className = "editName addInput";
+  addInput.id = idName;
+  addInput.placeholder = value;
+
+  addContainer.appendChild(addInput);
+}
+
 function addPopUp() {
+  var originalColumnNames = JSON.parse(localStorage.getItem("originalColumnNames"));
+  var formattedColumns = JSON.parse(localStorage.getItem("formattedColumns"));
+
   const messageContainer = document.getElementById("iframeContainer");
   const popUp = document.createElement("div");
   popUp.id = "popUpWindow";
@@ -6,8 +25,7 @@ function addPopUp() {
       <div class="messageBox">
         <header class="headerPopUp"><h1>Add Data</h1></header>
         <form class="userForm">
-          <input type="text" id="firstName" placeholder="First Name" />
-          <input type="text" id="lastName" placeholder="Last Name" />
+          <div id="addInputContainer"></div>
           <div class="yesOrNoBt">
             <button type="button" class="pageBt" onclick="addData()">Create</button>
             <button type="button" class="pageBt" onclick="cancelForm()">Cancel</button>
@@ -17,21 +35,32 @@ function addPopUp() {
     </section>`;
 
   messageContainer.appendChild(popUp);
+
+  for (const column of formattedColumns.columnNames) {
+    createAddElement(column);
+  }
 }
 
-//Action when pressing "Create" button from iframe
-function addData() {
-  let firstName = document.getElementById("firstName").value;
-  let lastName = document.getElementById("lastName").value;
+let dataObject = {};
 
-  if ((!firstName && !lastName) || !firstName || !lastName) {
-    alert("Field CANNOT be empty");
-    return;
+function addData() {
+  for (const column of originalColumnNames.columnNames) {
+    let idName = column.replace("_", "").toLowerCase() + "Input";
+
+    let inputElement = document.getElementById(idName);
+
+    dataObject[column] = inputElement.value;
   }
 
-  async function addNewData(firstName, lastName) {
+  console.log(dataObject);
+
+  async function addNewData(object) {
     try {
-      const response = await fetch(`/data/addClient?firstName=${firstName}&lastName=${lastName}`);
+      const response = await fetch("/data/addData", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(object),
+      });
 
       if (!response.ok) {
         const err = await response.json();
@@ -46,8 +75,9 @@ function addData() {
     }
   }
 
-  addNewData(firstName, lastName);
-  // Data is adding to database the iframe is not removing
+  addNewData(dataObject);
+
+  dataObject = {};
 }
 
 function cancelForm() {

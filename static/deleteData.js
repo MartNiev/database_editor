@@ -26,7 +26,7 @@ function deleteMessage() {
 
 async function deleteQuery(id) {
   try {
-    const response = await fetch(`/table/accounts/delete?id=${id}`);
+    const response = await fetch(`/table/accounts/delete?id=${id}`, { method: "DELETE" });
 
     if (!response.ok) {
       const err = await response.json();
